@@ -56,7 +56,35 @@ function initIncidentes(db){
                 });
         });//post
         
+        router.put('/:id', (req, res, next)=>{
+            var query = {"_id":new ObjectID(req.param.id)};
         
+            incidenteColl.updateOne(query, update, (err, rst)=>{});
+            if(err){
+                console.log(err);
+                return res.status(404).json({"error":"No se pudo modificar el incidente"});
+            }
+            if(rst.ops.length == 0){
+                console.log(err);
+                return res.status(404).json({"error":"No se pudo modificar el incidente"});
+            }
+            return res.status(200).json(rst.ops[0]);
+        }); // put
+        
+        router.delete('/:id', (req, res, next)=>{
+            var query = {"_id":new ObjectID(req.param.id)};
+        
+            plantasColl.removeOne(query, update, (err, rst)=>{});
+            if(err){
+                console.log(err);
+                return res.status(404).json({"error":"No se pudo eliminar el incidente"});
+            }
+            if(rst.ops.length == 0){
+                console.log(err);
+                return res.status(404).json({"error":"No se pudo eliminar el incidente"});
+            }
+            return res.status(200).json(rst.ops[0]);
+        }); // delete incidente
 
         return router;
     }
